@@ -22,7 +22,7 @@ function isTouchDevice(){
 //the same function for both events 
 
 events.forEach((eventType) => {
-    document.body.addEventListener(eventType, event => {
+    document.body.addEventListener(eventType, (event) => {
         eye.forEach(eye => {
             //getBoundingClientRect() returns the position relative to the viewport 
             let eyeX = eye.getBoundingClientRect().left + eye.clientWidth /2; 
@@ -31,17 +31,23 @@ events.forEach((eventType) => {
 
             //ClientX clientY returns the position of client's cursor from top left of the screen 
 
-            const x = !isTouchDevice() ? event.clientX : event.touchless[0].clientX;
-            const y = !isTouchDevice() ? event.clientY : event.touchless[0].clientY;
-            console.log(x, y);
-        });
-
+            let x = !isTouchDevice() ? event.clientX : event.touches[0].clientX;
+           let y = !isTouchDevice() ? event.clientY : event.touches[0].clientY;
         
-        // Substract x position of mouse from x position of eye and y postion of mouse from y posiion of eye. 
+    
+       
+        // Substract x position of mouse from x position of eye and y postion of mouse from y position of eye. 
         //use atan2() returns angle in radiants
+        let radian = Math.atan2(x - eyeX, y- eyeY);
 
+        // convert Radians t Degrees 
 
+        let rotationDegrees= radian * (180 / Math.PI) * -1 + 180; 
+        console.log(rotationDegrees); 
 
+        // Rotate the eye 
 
+        eye.style.transform = " rotate("  + rotationDegrees + " deg)" ; 
+      });
     });
 });
